@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_gesture_sample/model/image_state.dart';
 import 'package:image_gesture_sample/providers/image_state_provider.dart';
 // ignore: depend_on_referenced_packages
 import 'package:vector_math/vector_math_64.dart' as vector;
@@ -32,23 +31,39 @@ class ImageScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ImageState imageState = ref.watch(imageStateProvider);
+    final imageState = ref.watch(imageStateProvider);
+    final imageStateNotifier = ref.watch(imageStateProvider.notifier);
 
     return Scaffold(
-      body: Transform(
-        alignment: Alignment.center,
-        transform: Matrix4.identity()
-          ..setFromTranslationRotationScale(
-            vector.Vector3(imageState.x, imageState.y, 0), // x: 横移動, y: 縦移動
-            vector.Quaternion.axisAngle(
-                vector.Vector3(0, 0, 1), imageState.angle), // angle: 回転
-            vector.Vector3.all(imageState.scale), // scale: 拡大・縮小
-          ),
-        child: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/city.jpg'),
-              fit: BoxFit.contain,
+      body: GestureDetector(
+        // TODO: イベントの通知だけをするようにしたい。
+        onScaleUpdate: (details) {
+          imageStateNotifier.changePosition(details.focalPointDelta);
+          if (details.pointerCount == 2) {
+            imageStateNotifier.changeAngle(details.rotation);
+            imageStateNotifier.changeScale(details.scale);
+          }
+        },
+        onScaleEnd: (details) {
+          if (details.pointerCount == 2) {
+            imageStateNotifier.scaleEndAngle = imageState.angle;
+          }
+        },
+        child: Transform(
+          alignment: Alignment.center,
+          transform: Matrix4.identity()
+            ..setFromTranslationRotationScale(
+              vector.Vector3(imageState.x, imageState.y, 0), // x: 横移動, y: 縦移動
+              vector.Quaternion.axisAngle(
+                  vector.Vector3(0, 0, 1), imageState.angle), // angle: 回転
+              vector.Vector3.all(imageState.scale), // scale: 拡大・縮小
+            ),
+          child: Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/city.jpg'),
+                fit: BoxFit.contain,
+              ),
             ),
           ),
         ),
