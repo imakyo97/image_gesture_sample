@@ -124,13 +124,12 @@ class __$$_ImageStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ImageState extends _ImageState {
-  _$_ImageState(
+class _$_ImageState implements _ImageState {
+  const _$_ImageState(
       {required this.x,
       required this.y,
       required this.angle,
-      required this.scale})
-      : super._();
+      required this.scale});
 
   @override
   final double x;
@@ -167,13 +166,12 @@ class _$_ImageState extends _ImageState {
       __$$_ImageStateCopyWithImpl<_$_ImageState>(this, _$identity);
 }
 
-abstract class _ImageState extends ImageState {
-  factory _ImageState(
+abstract class _ImageState implements ImageState {
+  const factory _ImageState(
       {required final double x,
       required final double y,
       required final double angle,
       required final double scale}) = _$_ImageState;
-  _ImageState._() : super._();
 
   @override
   double get x;

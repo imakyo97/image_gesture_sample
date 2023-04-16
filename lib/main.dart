@@ -36,18 +36,11 @@ class ImageScreen extends ConsumerWidget {
 
     return Scaffold(
       body: GestureDetector(
-        // TODO: イベントの通知だけをするようにしたい。
         onScaleUpdate: (details) {
-          imageStateNotifier.changePosition(details.focalPointDelta);
-          if (details.pointerCount == 2) {
-            imageStateNotifier.changeAngle(details.rotation);
-            imageStateNotifier.changeScale(details.scale);
-          }
+          imageStateNotifier.didScaleUpdate(details: details);
         },
         onScaleEnd: (details) {
-          if (details.pointerCount == 2) {
-            imageStateNotifier.scaleEndAngle = imageState.angle;
-          }
+          imageStateNotifier.didScaleEnd(details: details);
         },
         child: Transform(
           alignment: Alignment.center,
