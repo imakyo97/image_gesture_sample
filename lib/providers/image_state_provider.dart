@@ -8,13 +8,16 @@ class ImageStateNotifier extends StateNotifier<ImageState> {
   /// 前操作の終了時の角度
   double scaleEndAngle = 0;
 
+  /// 前操作の終了時のスケール
+  double scaleEndScale = 1;
+
   didScaleUpdate({required ScaleUpdateDetails details}) {
     if (details.pointerCount == 2) {
       state = state.copyWith(
         x: state.x + details.focalPointDelta.dx,
         y: state.y + details.focalPointDelta.dy,
         angle: scaleEndAngle + details.rotation,
-        scale: details.scale,
+        scale: scaleEndScale * details.scale,
       );
     } else {
       state = state.copyWith(
@@ -27,6 +30,7 @@ class ImageStateNotifier extends StateNotifier<ImageState> {
   didScaleEnd({required ScaleEndDetails details}) {
     if (details.pointerCount == 2) {
       scaleEndAngle = state.angle;
+      scaleEndScale = state.scale;
     }
   }
 }
