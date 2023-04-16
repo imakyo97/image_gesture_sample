@@ -1,13 +1,13 @@
-class ImageState {
-  double x;
-  double y;
-  double angle;
-  double scale;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  ImageState({
-    required this.x,
-    required this.y,
-    required this.angle,
-    required this.scale,
-  });
+part 'image_state.freezed.dart';
+
+@freezed
+class ImageState with _$ImageState {
+  const factory ImageState({
+    required double x,
+    required double y,
+    required double angle,
+    required double scale,
+  }) = _ImageState;
 }

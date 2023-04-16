@@ -8,6 +8,6 @@ class ImageStateNotifier extends StateNotifier<ImageState> {
 final imageStateProvider =
     StateNotifierProvider<ImageStateNotifier, ImageState>((ref) {
   return ImageStateNotifier(
-    imageState: ImageState(x: 0, y: 0, angle: 0, scale: 1),
+    imageState: const ImageState(x: 0, y: 0, angle: 0, scale: 1),
   );
 });
